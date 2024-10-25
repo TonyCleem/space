@@ -1,13 +1,15 @@
 import requests
 import os
+import argparse
 from pathlib import Path
 from dotenv import load_dotenv
+from get_extension_on_link import get_an_extension
 
 
-def get_image_from_apod(url, api_key):
+def image_from_apod(url, count, api_key):
     directory = Path(r'C:\Devman\space\image')
     directory.mkdir(parents=True, exist_ok=True)
-    payload = {'count': '30', 'api_key': api_key}
+    payload = {'count': count, 'api_key': api_key}
     response = requests.get(url, params=payload)
     response.raise_for_status
     json_data = response.json()
@@ -27,6 +29,14 @@ def get_image_from_apod(url, api_key):
 if __name__ == '__main__':
     load_dotenv()
     nasa_api = os.getenv('NASA_API')
+    parser = argparse.ArgumentParser(description="Получить фото дня с сайта NASA")
 
+    parser.add_argument(
+        'count',
+        nargs='?',          # Аргумент необязательный
+        default='1',   # Значение по умолчанию
+        help="В параметрах укажите необходимое количество фото"
+    )
+    args = parser.parse_args()
     url = 'https://api.nasa.gov/planetary/apod'
-    get_image_from_apod(url, nasa_api)
+    image_from_apod(url, args.count, nasa_api)

@@ -5,7 +5,7 @@ from pathlib import Path
 from dotenv import load_dotenv
 
 
-def fetch_spacex_last_launch(url):
+def fetch_spacex_last_launch(url, api):
     directory = Path(r'C:\Devman\space\image')
     directory.mkdir(parents=True, exist_ok=True)
     response = requests.get(url)
@@ -26,14 +26,14 @@ def fetch_spacex_last_launch(url):
 if __name__ == '__main__':
     load_dotenv()
     nasa_api = os.getenv('NASA_API')
+    parser = argparse.ArgumentParser(description="Получить фото с запуска SpaceX по ID")
 
-    url = 'https://api.spacexdata.com/v5/launches/'
-
-    parser = argparse.ArgumentParser(description='Скачивает изображения с последнего запуска SpaceX')
-    parser.add_argument('id', help='Подставляет указаный ID в URL')
+    parser.add_argument(
+        'id', 
+        nargs='?',          
+        default='latest',
+        help="ID запуска. Если не указан, будет использован 'latest'"
+    )
     args = parser.parse_args()
-    fetch_spacex_last_launch(args.url, nasa_api)
-
-
-    # key = 605b4b95aa5433645e37d041
-
+    url = f'https://api.spacexdata.com/v5/launches/{args.id}'
+    fetch_spacex_last_launch(url, nasa_api)
