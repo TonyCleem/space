@@ -1,5 +1,6 @@
-from urllib.parse import unquote, urlsplit
 import os
+from urllib.parse import unquote, urlsplit
+
 
 def get_an_extension(url):
     parse = urlsplit(url)

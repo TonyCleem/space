@@ -12,8 +12,10 @@ def fetch_spacex_last_launch(url, api):
     response.raise_for_status
     spacex_data = response.json()
     image_links = spacex_data['links']['flickr']['original']
-
+    if not image_links:
+        print('Фотографий с послднего запуска нет')
     for image_number, link in enumerate(image_links):
+
         response = requests.get(link)
         response.raise_for_status
         file_name = 'spacex_' + str(image_number) + '.jpg'
@@ -26,14 +28,15 @@ def fetch_spacex_last_launch(url, api):
 if __name__ == '__main__':
     load_dotenv()
     nasa_api = os.getenv('NASA_API')
-    parser = argparse.ArgumentParser(description="Получить фото с запуска SpaceX по ID")
-
+    parser = argparse.ArgumentParser(description="Получить фото с запуска SpaceX")
     parser.add_argument(
         'id', 
         nargs='?',          
-        default='latest',
-        help="ID запуска. Если не указан, будет использован 'latest'"
+        default ='latest',
+        help="ID запуска. Default = 'latest'"
     )
     args = parser.parse_args()
+
     url = f'https://api.spacexdata.com/v5/launches/{args.id}'
+    print(url)
     fetch_spacex_last_launch(url, nasa_api)

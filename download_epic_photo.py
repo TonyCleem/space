@@ -7,7 +7,7 @@ from dotenv import load_dotenv
 
 
 def download_epic_photo(url, api_key):
-    directory = Path(r'C:\Devman\iso_tg\image')
+    directory = Path(r'C:\Devman\space\image')
     directory.mkdir(parents=True, exist_ok=True)
     payload = {'api_key': api_key}
     response = requests.get(url, params=payload)

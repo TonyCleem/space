@@ -13,7 +13,7 @@ def image_from_apod(url, count, api_key):
     response = requests.get(url, params=payload)
     response.raise_for_status
     json_data = response.json()
-
+    
     for image_number, image_links in enumerate(json_data):
         link = image_links['url']
         extension= get_an_extension(link)
@@ -26,23 +26,19 @@ def image_from_apod(url, count, api_key):
             file.write(response.content)
             print('Загружено изображение nasa_apod_'+str(image_number))
 
+
 if __name__ == '__main__':
     load_dotenv()
     nasa_api = os.getenv('NASA_API')
-    parser = argparse.ArgumentParser(description="Получить фото дня с сайта NASA")
-
+    parser = argparse.ArgumentParser(description="Получить APOD с сайта NASA.")
     parser.add_argument(
         'count',
         nargs='?',         
         default='1',   
-        help="В параметрах укажите необходимое количество фото"
+        help="Кол-во фото. Default = '1'"
     )
-
     directory = Path(r'C:\Devman\space\image')
     directory.mkdir(parents=True, exist_ok=True)
-
-
-    
     args = parser.parse_args()
     url = 'https://api.nasa.gov/planetary/apod'
     image_from_apod(url, args.count, nasa_api)

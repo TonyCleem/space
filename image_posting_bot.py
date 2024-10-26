@@ -23,17 +23,15 @@ if __name__ == '__main__':
     bot = telegram.Bot(token=tg_token)
     updates = bot.get_updates()
     parser = argparse.ArgumentParser(
-        description="Постит изображение в телеграм канал"
+        description="Постит изображение в телеграм канал. При пустом ключе запостит случайное"
         )
-
     parser.add_argument(
             'file',
             nargs='?',
             default=None,
-            help="Укажите имя файла"
+            help="<имя изображения>.<расширение>"
         )
     args = parser.parse_args()
-
     file = args.file
     if not file:
     	posting_image()
@@ -43,9 +41,3 @@ if __name__ == '__main__':
         file_path = directory / file
         bot.send_document(chat_id='@window_on_space', document=open(file_path, 'rb'))
         print(f"Файл {file}' загружен")
-   
-
-    	
-
-
-    
