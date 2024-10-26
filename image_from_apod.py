@@ -33,10 +33,16 @@ if __name__ == '__main__':
 
     parser.add_argument(
         'count',
-        nargs='?',          # Аргумент необязательный
-        default='1',   # Значение по умолчанию
+        nargs='?',         
+        default='1',   
         help="В параметрах укажите необходимое количество фото"
     )
+
+    directory = Path(r'C:\Devman\space\image')
+    directory.mkdir(parents=True, exist_ok=True)
+
+
+    
     args = parser.parse_args()
     url = 'https://api.nasa.gov/planetary/apod'
     image_from_apod(url, args.count, nasa_api)
