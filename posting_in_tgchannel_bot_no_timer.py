@@ -1,13 +1,11 @@
 import telegram
-import random
-import time
-import os
 import argparse
+import os
+import random
 from dotenv import load_dotenv
 from pathlib import Path
 
-
-def posting_file():
+def posting_image():
     directory = Path(r'C:\Devman\space\image')
     changed_directory = os.walk(directory)
     for content in changed_directory:
@@ -18,21 +16,36 @@ def posting_file():
         bot.send_document(chat_id='@window_on_space', document=open(file_path, 'rb'))
         print(f"Файл {file}' загружен")
 
+
 if __name__ == '__main__':
     load_dotenv()
     tg_token = os.getenv('TELEGRAM_API')
     bot = telegram.Bot(token=tg_token)
+    updates = bot.get_updates()
     parser = argparse.ArgumentParser(
-        description="Постит фото по указанному времени в часах"
+        description="Постит изображение в телеграм канал"
         )
+
     parser.add_argument(
-            'time',
-            nargs='?',         
-            default='4',   
-            help="В параметрах укажите время, где 1 это 1 час"
+            'file',
+            nargs='?',
+            default=None,
+            help="Укажите имя файла"
         )
     args = parser.parse_args()
-    hours = int(args.time) * 3600
-    while True:
-        time.sleep(int(hours))
-        posting_file()
+
+    file = args.file
+    if not file:
+    	posting_image()
+    else:
+        directory = Path(r'C:\Devman\space\image')
+        file = args.file
+        file_path = directory / file
+        bot.send_document(chat_id='@window_on_space', document=open(file_path, 'rb'))
+        print(f"Файл {file}' загружен")
+   
+
+    	
+
+
+    
