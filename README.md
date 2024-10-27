@@ -36,7 +36,7 @@ deactivate
 #### API
 
 Для работы требуются токены API:
-- [NASA](https://api.nasa.gov/#:~:text=Browse%20APIs-,Generate%20API%20Key,-Required%20fields%20are).
+- [NASA](https://api.nasa.gov/#:~:text=Browse%20APIs-,Generate%20API%20Key,-Required%20fields%20are)
 
 - [Telegram](https://smmplanner.com/blog/otlozhennyj-posting-v-telegram/#02:~:text=%D0%B8%D0%BD%D1%81%D1%82%D1%80%D1%83%D0%BC%D0%B5%D0%BD%D1%82%D1%8B%2C%20%D0%BF%D1%80%D0%BE%D0%B4%D0%B0%D0%B6%D0%B8%C2%BB.-,%D0%A1%D0%BE%D0%B7%D0%B4%D0%B0%D0%B5%D0%BC%20%D0%B1%D0%BE%D1%82%D0%B0,-%D0%A1%D0%BB%D0%B5%D0%B4%D1%83%D1%8E%D1%89%D0%B8%D0%B9%20%D1%88%D0%B0%D0%B3%20%E2%80%94%20%D1%81%D0%BE%D0%B7%D0%B4%D0%B0%D0%BD%D0%B8%D0%B5)
 
@@ -61,12 +61,11 @@ py script -h
 ```
 
 
-
-## Пример использования ##
+### Пример использования ###
 
 Во мнонгих случах использования скриптов будет создана директория `C:\Devman\space\image` куда скачаются изображения.
 
-### `download_epic_photo`
+#### `download_epic_photo`
 
 Скачиает фото последние сники земли сделанные NASA
 
@@ -80,7 +79,7 @@ py script -h
 (env) C:\Devman\space>
 ```
 
-### fetch_spacex_last_launch
+#### `fetch_spacex_last_launch`
 
 Скачивает фото с запуска SpaceX
 Если у Вас есть ID запуска можете указать в качестве ключа. По умолчанию будут скачены фото с последнего запуска. Для подробностей используйте ключ `-h`
@@ -94,7 +93,7 @@ https://api.spacexdata.com/v5/launches/latest
 (env) C:\Devman\space>
 ```
 
-### image_from_apod
+#### `image_from_apod`
 
 Скачивает "Astronomy Picture of the Day" (Астрономическую картину дня) или указанное кол-во картин в ключе скрипта.
 
@@ -108,24 +107,9 @@ https://api.spacexdata.com/v5/launches/latest
 (env) C:\Devman\space>
 ```
 
-### image_posting_bot
+#### `image_posting_bot`
 
 Требуется наличие телеграм бота токена. Скрипт выгружает случайную фотографию из директории `C:\Devman\space\image`.
-
-
-```cmd
-(env) C:\Devman\space>py image_posting_bot.py
-C:\Devman\space\env\Lib\site-packages\telegram\utils\request.py:46: UserWarning: python-telegram-bot is using upstream urllib3. This is allowed but not supported by python-telegram-bot maintainers.
-  warnings.warn('python-telegram-bot is using upstream urllib3. This is allowed but not '
-Файл nasa_apod_6.jpg' загружен
-
-(env) C:\Devman\space>
-```
-
-
-### image_posting_bot
-
-Постит случайное изображение из директории `C:\Devman\space\image` в группу
 
 
 В скрипте нужно указать имя группы для `chat_id`
@@ -143,7 +127,7 @@ C:\Devman\space\env\Lib\site-packages\telegram\utils\request.py:46: UserWarning:
 (env) C:\Devman\space>
 ```
 
-### bot_timer_for_posting
+#### `bot_timer_for_posting`
 
 Задает таймер для размещения фотографий по указанному времени. Фотографии выбираются в случайном порядке из директории `C:\Devman\space\image`. По умолчанию задано 4 часа.
 
