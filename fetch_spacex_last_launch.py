@@ -13,7 +13,7 @@ def fetch_spacex_last_launch(url, api):
     spacex_data = response.json()
     image_links = spacex_data['links']['flickr']['original']
     if not image_links:
-        print('Фотографий с послднего запуска нет')
+        print('Фотографий с последнего запуска нет')
     for image_number, link in enumerate(image_links):
 
         response = requests.get(link)

@@ -16,7 +16,7 @@ def posting_file():
         file = filenames[0]
         file_path = directory / file
         bot.send_document(chat_id='@window_on_space', document=open(file_path, 'rb'))
-        print(f"Файл {file}' загружен")
+        print(f"Файл {file}' выгружен на канал")
 
 
 if __name__ == '__main__':
@@ -35,5 +35,5 @@ if __name__ == '__main__':
     args = parser.parse_args()
     hours = int(args.time) * 3600
     while True:
-        time.sleep(int(hours))
+        time.sleep(int(args.time))
         posting_file()
