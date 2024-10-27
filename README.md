@@ -68,8 +68,6 @@ py script -h
 Скачиает фото последние сники земли сделанные NASA
 
 Ключи указывать не нужно. Достаточно запустить скрипт.
-
-
 ```cmd
 (env) C:\Devman\space>py download_epic_photo.py
 Загружено изображение EPIC_photo_0
@@ -80,8 +78,6 @@ py script -h
 #### `fetch_spacex_last_launch`
 Скачивает фото с запуска SpaceX
 Если у Вас есть ID запуска можете указать в качестве ключа. По умолчанию будут скачены фото с последнего запуска. Для подробностей используйте ключ `-h`
-
-
 ```cmd
 (env) C:\Devman\space>py fetch_spacex_last_launch.py
 https://api.spacexdata.com/v5/launches/latest
@@ -92,8 +88,6 @@ https://api.spacexdata.com/v5/launches/latest
 
 #### `image_from_apod`
 Скачивает "Astronomy Picture of the Day" (Астрономическую картину дня) или указанное кол-во картин в ключе скрипта.
-
-
 ```cmd
 (env) C:\Devman\space>py image_from_apod.py 3
 Загружено изображение nasa_apod_0
@@ -129,7 +123,6 @@ C:\Devman\space\env\Lib\site-packages\telegram\utils\request.py:46: UserWarning:
 
 
 В скрипте нужно указать имя группы для `chat_id`
-
 ```python
 bot.send_document(chat_id='<@имя группы>', document=open(file_path, 'rb'))
 ```
