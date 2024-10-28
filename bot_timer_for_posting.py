@@ -7,33 +7,72 @@ from dotenv import load_dotenv
 from pathlib import Path
 
 
-def posting_file():
-    directory = Path(r'C:\Devman\space\image')
-    changed_directory = os.walk(directory)
-    for content in changed_directory:
-        dirpath, dirnames, filenames = content
-        random.shuffle(filenames)
-        file = filenames[0]
-        file_path = directory / file
-        bot.send_document(chat_id='@window_on_space', document=open(file_path, 'rb'))
-        print(f"Файл {file}' выгружен на канал")
-
-
-if __name__ == '__main__':
-    load_dotenv()
-    tg_token = os.getenv('TELEGRAM_API')
-    bot = telegram.Bot(token=tg_token)
+def createParser ():
     parser = argparse.ArgumentParser(
         description="Постит фото по указанному времени в часах."
         )
     parser.add_argument(
             'time',
             nargs='?',         
-            default='4',   
+            default='4',
+            type=int,  
             help="Время в часах. Default = '4ч'"
         )
+
+    return parser
+
+
+def get_images_of_directory(path):
+    directory_structure = os.walk(path)
+    for contents in directory_structure:
+        dirpath, dirnames, images = contents
+        return images
+
+
+def send_all_images_from_directory_by_timer(chat_id, path, images, hours):
+    for image in images:
+        time.sleep(2)
+        file_path = path / image
+        with open(file_path, 'rb') as document:
+            bot.send_document(chat_id, document)
+        
+
+
+def send_random_image_by_timer(chat_id, path, image, hours):
+        time.sleep(2)
+        file_path = path / image
+        with open(file_path, 'rb') as document:
+            bot.send_document(chat_id, document)
+
+
+if __name__ == '__main__':
+    load_dotenv()
+    tg_token = os.environ['TELEGRAM_BOT_TOKEN']
+    chat_id = os.environ['TELEGRAM_CHAT_ID']
+
+    bot = telegram.Bot(token=tg_token)
+    path = Path('./image/')
+
+    parser = createParser()
     args = parser.parse_args()
-    hours = int(args.time) * 3600
+    hours = args.time * 3600
+
+    images = get_images_of_directory(path)
+
+    if not images:
+        print('Каталог пуст')
+    else:
+        send_all_images_from_directory_by_timer(chat_id, path, images, 4)
+        print('Я отравил весь каталог')
     while True:
-        time.sleep(int(args.time))
-        posting_file()
+        images = get_images_of_directory(path)
+        random.shuffle(images)
+        image = images[0]
+        send_random_image_by_timer(chat_id, path, image, 4)
+        print('Изображение отправлено')
+
+
+       
+        
+        
+    

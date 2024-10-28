@@ -7,8 +7,8 @@ from get_extension_on_link import get_an_extension
 
 
 def image_from_apod(url, count, api_key):
-    directory = Path(r'C:\Devman\space\image')
-    directory.mkdir(parents=True, exist_ok=True)
+    path = Path('./image/')
+    path.mkdir(parents=True, exist_ok=True)
     payload = {'count': count, 'api_key': api_key}
     response = requests.get(url, params=payload)
     response.raise_for_status
@@ -20,7 +20,7 @@ def image_from_apod(url, count, api_key):
         response = requests.get(link)
         response.raise_for_status
         file_name = 'nasa_apod_' + str(image_number) + extension
-        file_path = directory / file_name
+        file_path = path / file_name
 
         with open(file_path, 'wb') as file:
             file.write(response.content)
@@ -29,7 +29,7 @@ def image_from_apod(url, count, api_key):
 
 if __name__ == '__main__':
     load_dotenv()
-    nasa_api = os.getenv('NASA_API')
+    nasa_api = os.environ['NASA_API_TOKEN']
     parser = argparse.ArgumentParser(description="Получить APOD с сайта NASA.")
     parser.add_argument(
         'count',
@@ -37,8 +37,8 @@ if __name__ == '__main__':
         default='1',   
         help="Кол-во фото. Default = '1'"
     )
-    directory = Path(r'C:\Devman\space\image')
-    directory.mkdir(parents=True, exist_ok=True)
+    path = Path('./image/')
+    path.mkdir(parents=True, exist_ok=True)
     args = parser.parse_args()
     url = 'https://api.nasa.gov/planetary/apod'
     image_from_apod(url, args.count, nasa_api)

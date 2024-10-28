@@ -7,8 +7,8 @@ from dotenv import load_dotenv
 
 
 def download_epic_photo(url, api_key):
-    directory = Path(r'C:\Devman\space\image')
-    directory.mkdir(parents=True, exist_ok=True)
+    path = Path('./image/')
+    path.mkdir(parents=True, exist_ok=True)
     payload = {'api_key': api_key}
     response = requests.get(url, params=payload)
     response.raise_for_status
@@ -22,7 +22,7 @@ def download_epic_photo(url, api_key):
         response = requests.get(url, params=payload)
         response.raise_for_status
         file_name = 'EPIC_photo_' + str(image_number) + '.png'
-        file_path = directory / file_name
+        file_path = path / file_name
         with open(file_path, 'wb') as file:
             file.write(response.content)
             print('Загружено изображение EPIC_photo_'+str(image_number))
@@ -30,6 +30,6 @@ def download_epic_photo(url, api_key):
 
 if __name__ == '__main__':
     load_dotenv()
-    nasa_api = os.getenv('NASA_API')
+    nasa_api = os.environ('NASA_API_TOKEN')
     url = 'https://epic.gsfc.nasa.gov/api/natural'
     download_epic_photo(url, nasa_api)

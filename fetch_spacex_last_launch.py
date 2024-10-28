@@ -6,8 +6,8 @@ from dotenv import load_dotenv
 
 
 def fetch_spacex_last_launch(url, api):
-    directory = Path(r'C:\Devman\space\image')
-    directory.mkdir(parents=True, exist_ok=True)
+    path = Path('./image/')
+    path.mkdir(parents=True, exist_ok=True)
     response = requests.get(url)
     response.raise_for_status
     spacex_data = response.json()
@@ -19,7 +19,7 @@ def fetch_spacex_last_launch(url, api):
         response = requests.get(link)
         response.raise_for_status
         file_name = 'spacex_' + str(image_number) + '.jpg'
-        file_path = directory / file_name
+        file_path = path / file_name
         with open(file_path, 'wb') as file:
             file.write(response.content)
             print('Загружено изображение spacex_'+str(image_number) + '.jpg')
@@ -27,7 +27,7 @@ def fetch_spacex_last_launch(url, api):
 
 if __name__ == '__main__':
     load_dotenv()
-    nasa_api = os.getenv('NASA_API')
+    nasa_api = oos.environ['NASA_API_TOKEN']
     parser = argparse.ArgumentParser(description="Получить фото с запуска SpaceX")
     parser.add_argument(
         'id', 
@@ -38,5 +38,4 @@ if __name__ == '__main__':
     args = parser.parse_args()
 
     url = f'https://api.spacexdata.com/v5/launches/{args.id}'
-    print(url)
     fetch_spacex_last_launch(url, nasa_api)
