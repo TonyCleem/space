@@ -31,15 +31,14 @@ def get_images_of_directory(path):
 
 def send_all_images_from_directory_by_timer(chat_id, path, images, hours):
     for image in images:
-        time.sleep(2)
+        time.sleep(hours)
         file_path = path / image
         with open(file_path, 'rb') as document:
             bot.send_document(chat_id, document)
         
 
-
 def send_random_image_by_timer(chat_id, path, image, hours):
-        time.sleep(2)
+        time.sleep(hours)
         file_path = path / image
         with open(file_path, 'rb') as document:
             bot.send_document(chat_id, document)
@@ -49,8 +48,8 @@ if __name__ == '__main__':
     load_dotenv()
     tg_token = os.environ['TELEGRAM_BOT_TOKEN']
     chat_id = os.environ['TELEGRAM_CHAT_ID']
-
     bot = telegram.Bot(token=tg_token)
+
     path = Path('./image/')
 
     parser = createParser()
@@ -62,17 +61,11 @@ if __name__ == '__main__':
     if not images:
         print('Каталог пуст')
     else:
-        send_all_images_from_directory_by_timer(chat_id, path, images, 4)
-        print('Я отравил весь каталог')
+        send_all_images_from_directory_by_timer(chat_id, path, images, hours)
+        print('Все файлы из каталога отправлены. Начинается отправка случайных изображений из каталога')
     while True:
         images = get_images_of_directory(path)
         random.shuffle(images)
         image = images[0]
-        send_random_image_by_timer(chat_id, path, image, 4)
-        print('Изображение отправлено')
-
-
-       
-        
-        
-    
+        send_random_image_by_timer(chat_id, path, image, hours)
+        print(f'Изображение {image} отправлено в телеграм канал {chat_id}')
