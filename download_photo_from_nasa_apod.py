@@ -16,7 +16,7 @@ def image_from_apod(url, count, api_key):
     
     for image_number, image_links in enumerate(json_data):
         link = image_links['url']
-        extension= get_an_extension(link)
+        extension = get_an_extension(link)
         response = requests.get(link)
         response.raise_for_status
         file_name = 'nasa_apod_' + str(image_number) + extension

@@ -29,7 +29,7 @@ def get_images_of_directory(path):
         return images
 
 
-def send_all_images_from_directory_by_timer(chat_id, path, images, hours):
+def sends_all_images_from_directory_by_timer(chat_id, path, images, hours):
     for image in images:
         time.sleep(hours)
         file_path = path / image
@@ -37,7 +37,7 @@ def send_all_images_from_directory_by_timer(chat_id, path, images, hours):
             bot.send_document(chat_id, document)
         
 
-def send_random_image_by_timer(chat_id, path, image, hours):
+def sends_image_by_timer(chat_id, path, image, hours):
         time.sleep(hours)
         file_path = path / image
         with open(file_path, 'rb') as document:
@@ -55,9 +55,8 @@ if __name__ == '__main__':
     parser = createParser()
     args = parser.parse_args()
     hours = args.time * 3600
-
+    
     images = get_images_of_directory(path)
-
     if not images:
         print('Каталог пуст')
     else:
@@ -67,5 +66,5 @@ if __name__ == '__main__':
         images = get_images_of_directory(path)
         random.shuffle(images)
         image = images[0]
-        send_random_image_by_timer(chat_id, path, image, hours)
+        send_image_by_timer(chat_id, path, image, hours)
         print(f'Изображение {image} отправлено в телеграм канал {chat_id}')
