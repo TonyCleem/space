@@ -2,7 +2,6 @@ import requests
 import os
 import datetime
 import argparse
-import pprint
 from pathlib import Path
 from dotenv import load_dotenv
 
@@ -32,8 +31,8 @@ def generates_url_nasa_epic(date, image_name):
     return generated_url
 
 
-def downloades_images_from_epic(response):
-    for image_number, date_and_image in enumerate(response):
+def downloades_images_from_epic(epic_info):
+    for image_number, date_and_image in enumerate(epic_info):
         date = date_and_image['date']
         image = date_and_image['image']
         date = formats_data(date)
@@ -58,8 +57,8 @@ if __name__ == '__main__':
         url = f'https://epic.gsfc.nasa.gov/api/natural'
         response = requests.get(url)
         response.raise_for_status
-        response = response.json()
-        downloades_images_from_epic(response)
+        epic_info = response.json()
+        downloades_images_from_epic(epic_info)
         print('Загружены последние опубликованные фото')
 
     else:
@@ -67,7 +66,7 @@ if __name__ == '__main__':
         response = requests.get(url)
         response.raise_for_status
         response = response.json()
-        downloades_images_from_epic(response)
+        downloades_images_from_epic(epic_info)
         print(f'Загружены фото за {date}')
         
 

@@ -3,7 +3,7 @@ import os
 import argparse
 from pathlib import Path
 from dotenv import load_dotenv
-from file_name_parser  import parse_filename_and_extension_from_url
+from filename_parser  import parse_filename_and_extension_from_url
 
 
 def createParser ():
@@ -22,8 +22,8 @@ def download_photo_from_url(url, count, token):
     payload = {'count': count, 'api_key': token}
     response = requests.get(url, params=payload)
     response.raise_for_status
-    response = response.json()
-    for image_number, image_links in enumerate(response):
+    apod_info = response.json()
+    for image_number, image_links in enumerate(apod_info):
         link = image_links['url']
         name, extension = parse_filename_and_extension_from_url(link)
         response = requests.get(link)
@@ -41,7 +41,7 @@ if __name__ == '__main__':
     parser = createParser()
     args = parser.parse_args()
     photo_count = args.count
-    
+
     url = 'https://api.nasa.gov/planetary/apod'
     download_photo_from_url(url, photo_count, token)
-    print(f'Загруженно {photo_count} фото')
+    print(f'Загружено {photo_count} фото')
