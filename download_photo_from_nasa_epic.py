@@ -9,7 +9,7 @@ from dotenv import load_dotenv
 
 def createParser ():
     parser = argparse.ArgumentParser(
-        description="Скачивает фото Земли."
+        description="Скачивает фото Земли по указанной дате. По умолчнию скачает по последней дате."
         )
     parser.add_argument(
             'date',
@@ -41,7 +41,7 @@ def downloades_images_from_epic(response):
         generated_url = generates_url_nasa_epic(date, image_name)
         response = requests.get(generated_url)
         response.raise_for_status
-        file_name = f'{image_name}.png'
+        file_name = f'{image_name}'
         file_path = path / file_name
         with open(file_path, 'wb') as file:
             file.write(response.content)
@@ -50,8 +50,9 @@ def downloades_images_from_epic(response):
 if __name__ == '__main__':
     path = Path('./image/')
     path.mkdir(parents=True, exist_ok=True)
-
-    date = '2020-10-13'
+    parser = createParser()
+    args = parser.parse_args()
+    date = args.date
 
     if not date:
         url = f'https://epic.gsfc.nasa.gov/api/natural'
