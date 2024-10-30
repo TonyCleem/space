@@ -1,7 +1,8 @@
 import requests
 import argparse
-from pathlib import Path
-from filename_parser  import parse_filename_and_extension_from_url
+from downloader import download_files_from_data_in_dir
+from directory_creator import creates_directory_for_image_path
+from fetch_data import get_data_from_link
 
 
 def createParser ():
@@ -19,29 +20,12 @@ def createParser ():
 def check_photo_from_last_launch(url):
     response = requests.get(url)
     response.raise_for_status
-    launch_info = response.json()
-    image_links = launch_info['links']['flickr']['original']
-    return image_links
+    data = response.json()
+    images = data['links']['flickr']['original']
+    return images
 
-
-def download_images_from_launches(url, path):
-    response = requests.get(url)
-    response.raise_for_status
-    launch_info = response.json()
-    image_links = launch_info['links']['flickr']['original']
-    for image_number, link in enumerate(image_links):
-        name, extension = parse_filename_and_extension_from_url(link)
-        response = requests.get(link)
-        response.raise_for_status
-        file_name = f'Photo_from_launch_{image_number}{extension}'
-        file_path = path / file_name
-        with open(file_path, 'wb') as file:
-            file.write(response.content)
-            
 
 if __name__ == '__main__':
-    path = Path('./image/')
-    path.mkdir(parents=True, exist_ok=True)
     parser = createParser()
     args = parser.parse_args()
     launch_id = args.id
@@ -50,5 +34,8 @@ if __name__ == '__main__':
     if not check_photo_from_last_launch(url):
         print('Фотографий с последнего запуска нет')
     else:
-        download_images_from_launches(url, path)
-        print('Загружены все фотографии с указанного запуска')
+        path = creates_directory_for_image_path()
+        data = get_data_from_link(url)
+        links = data['links']['flickr']['original']
+        download_files_from_data_in_dir(links, path)
+        print('Загружены все фотографии с указанного ID запуска')

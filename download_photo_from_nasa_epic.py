@@ -1,9 +1,8 @@
-import requests
-import os
 import datetime
 import argparse
-from pathlib import Path
-from dotenv import load_dotenv
+from fetch_data import get_data_from_link
+from directory_creator import creates_directory_for_image_path
+from downloader import download_files_from_data_in_dir
 
 
 def createParser ():
@@ -31,48 +30,31 @@ def generates_url_nasa_epic(date, image_name):
     return generated_url
 
 
-def downloades_images_from_epic(epic_info):
-    for image_number, date_and_image in enumerate(epic_info):
-        date = date_and_image['date']
-        image = date_and_image['image']
+def creates_image_links(data):
+    for date_and_file in data:
+        date = date_and_file['date']
+        filename = date_and_file['image']
+        image_name = f'{filename}.png'
         date = formats_data(date)
-        image_name = f'{image}.png'
-        generated_url = generates_url_nasa_epic(date, image_name)
-        response = requests.get(generated_url)
-        response.raise_for_status
-        file_name = f'{image_name}'
-        file_path = path / file_name
-        with open(file_path, 'wb') as file:
-            file.write(response.content)
+        image_links.append(generates_url_nasa_epic(date, image_name))
 
 
 if __name__ == '__main__':
-    path = Path('./image/')
-    path.mkdir(parents=True, exist_ok=True)
     parser = createParser()
     args = parser.parse_args()
     date = args.date
+    path = creates_directory_for_image_path()
 
+    image_links = []
     if not date:
         url = f'https://epic.gsfc.nasa.gov/api/natural'
-        response = requests.get(url)
-        response.raise_for_status
-        epic_info = response.json()
-        downloades_images_from_epic(epic_info)
+        data = get_data_from_link(url)
+        creates_image_links(data)
+        download_files_from_data_in_dir(image_links, path)
         print('Загружены последние опубликованные фото')
-
     else:
         url = f'https://epic.gsfc.nasa.gov/api/natural/date/{date}'
-        response = requests.get(url)
-        response.raise_for_status
-        response = response.json()
-        downloades_images_from_epic(epic_info)
+        data = get_data_from_link(url)
+        creates_image_links(data)
+        download_files_from_data_in_dir(image_links, path)
         print(f'Загружены фото за {date}')
-        
-
-
-    
-
-
-
-
