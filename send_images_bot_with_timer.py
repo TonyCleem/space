@@ -60,11 +60,11 @@ if __name__ == '__main__':
     if not images:
         print('Каталог пуст')
     else:
-        send_all_images_from_directory_by_timer(chat_id, path, images, hours)
+        sends_all_images_from_directory_by_timer(chat_id, path, images, hours)
         print('Все файлы из каталога отправлены. Начинается отправка случайных изображений из каталога')
     while True:
         images = get_images_of_directory(path)
         random.shuffle(images)
         image = images[0]
-        send_image_by_timer(chat_id, path, image, hours)
+        sends_image_by_timer(chat_id, path, image, hours)
         print(f'Изображение {image} отправлено в телеграм канал {chat_id}')

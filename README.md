@@ -62,79 +62,66 @@ py script -h
 
 
 ### Пример использования ###
-Во многих случах использования скриптов будет создана директория `C:\Devman\space\image` куда скачаются изображения.
 
-#### `download_epic_photo`
-Скачиает фото последние сники земли сделанные NASA
-
-Ключи указывать не нужно. Достаточно запустить скрипт.
+#### `download_photo_from_nasa_epic`
+Загружает сникми земли сделанные NASA. В качетсве ключа укажите дату (YYYY-MM-DD) или оставьте пустое значение, чтобы скачать последние снимки.
 ```cmd
-(env) C:\Devman\space>py download_epic_photo.py
-Загружено изображение EPIC_photo_0
-Загружено изображение EPIC_photo_1
-(env) C:\Devman\space>
+C:\Devman\space>py download_photo_from_nasa_epic.py 1996-10-13
+Загружены фото за 1996-10-13
+
+C:\Devman\space>
 ```
 
 #### `fetch_spacex_last_launch`
 Скачивает фото с запуска SpaceX
-Если у Вас есть ID запуска можете указать в качестве ключа. По умолчанию будут скачены фото с последнего запуска. Для подробностей используйте ключ `-h`
+Если у Вас есть ID запуска можете указать в качестве ключа. По умолчанию будут скачены фото с последнего запуска.
 ```cmd
-(env) C:\Devman\space>py fetch_spacex_last_launch.py
-https://api.spacexdata.com/v5/launches/latest
-Фотографий с последнего запуска нет
+C:\Devman\space>py fetch_spacex_last_launch.py 5eb87d47ffd86e000604b38a
+Загружены все фотографии с указанного ID запуска
 
-(env) C:\Devman\space>
+C:\Devman\space>
 ```
 
-#### `image_from_apod`
-Скачивает "Astronomy Picture of the Day" (Астрономическую картину дня) или указанное кол-во картин в ключе скрипта.
+#### `download_photo_from_nasa_apod`
+Скачивает "Astronomy Picture of the Day" (Астрономическую картину дня) или указанное кол-во изображений в ключе скрипта.
 ```cmd
-(env) C:\Devman\space>py image_from_apod.py 3
-Загружено изображение nasa_apod_0
-Загружено изображение nasa_apod_1
-Загружено изображение nasa_apod_2
+C:\Devman\space>py download_photo_from_nasa_apod.py 3
+Загружено 3 фото
 
-(env) C:\Devman\space>
+C:\Devman\space>
 ```
 
-#### `image_posting_bot`
+#### Telegram bots
+В файле `.env` укажите имя телеграм канала для переменной `chat_id`.
+>```
+>NASA_API=<ваш ключ>
+>TELEGRAM_API=<токен от вашего бота>
+>chat_id=<@имя_телеграм_канала>
+>```
 
-Требуется наличие телеграм бота токена. Скрипт выгружает случайную фотографию из директории `C:\Devman\space\image`.
 
-
-В скрипте нужно указать имя группы для `chat_id`
-```python
-bot.send_document(chat_id='<@имя группы>', document=open(file_path, 'rb'))
-```
-
-Пример использования
+##### `send_images_bot`
+Укажите имя изображения из директории как ключ. При пустом значении будет отправлено случайное
 ```cmd
-(env) C:\Devman\space>py image_posting_bot.py
-C:\Devman\space\env\Lib\site-packages\telegram\utils\request.py:46: UserWarning: python-telegram-bot is using upstream urllib3. This is allowed but not supported by python-telegram-bot maintainers.
+C:\Devman\space>py send_images_bot.py Image_epic_1b_20241030091805.png
+C:\Users\tonyc\AppData\Roaming\Python\Python312\site-packages\telegram\utils\request.py:46: UserWarning: python-telegram-bot is using upstream urllib3. This is allowed but not supported by python-telegram-bot maintainers.
   warnings.warn('python-telegram-bot is using upstream urllib3. This is allowed but not '
-Файл EPIC_photo_8.png' загружен
+Изображение Image_epic_1b_20241030091805.png отправлено на канал  @window_on_space
 
-(env) C:\Devman\space>
+C:\Devman\space>
 ```
 
-#### `bot_timer_for_posting`
-
-Задает таймер для размещения фотографий по указанному времени. Фотографии выбираются в случайном порядке из директории `C:\Devman\space\image`. По умолчанию задано 4 часа.
-
-
-В скрипте нужно указать имя группы для `chat_id`
-```python
-bot.send_document(chat_id='<@имя группы>', document=open(file_path, 'rb'))
-```
-
-Пример использования
+##### `send_images_bot_with_timer`
+Выгружает из директории все изображения в телеграм канал. Между постами оставляет промежуток времени.
+Укажите время промежутка в качестве ключа, где 1 == 1 час. По умолчанию задано 4 часа между постами.
 ```cmd
-(env) C:\Devman\space>py bot_timer_for_posting.py 3
-C:\Devman\space\env\Lib\site-packages\telegram\utils\request.py:46: UserWarning: python-telegram-bot is using upstream urllib3. This is allowed but not supported by python-telegram-bot maintainers.
+C:\Devman\space>py send_images_bot_with_timer.py 2
+C:\Users\tonyc\AppData\Roaming\Python\Python312\site-packages\telegram\utils\request.py:46: UserWarning: python-telegram-bot is using upstream urllib3. This is allowed but not supported by python-telegram-bot maintainers.
   warnings.warn('python-telegram-bot is using upstream urllib3. This is allowed but not '
-Файл nasa_apod_1.jpg' выгружен на канал
-Файл nasa_apod_2' выгружен на канал
-Файл EPIC_photo_5.png' выгружен на канал
+Все файлы из каталога отправлены. Начинается отправка случайных изображений из каталога
+Изображение Image_epic_1b_20241030144213.png отправлено в телеграм канал @window_on_space
+Изображение Image_epic_1b_20241030144213.png отправлено в телеграм канал @window_on_space
+Изображение Image_epic_1b_20241030144213.png отправлено в телеграм канал @window_on_space
 ```
 
 
