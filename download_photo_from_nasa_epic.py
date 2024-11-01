@@ -49,7 +49,6 @@ if __name__ == '__main__':
     image_links = []
     url = f'https://epic.gsfc.nasa.gov/api/natural/date/{date}'
     epic_data = get_json_data_from_api(url)
-    print(epic_data)
     creates_image_links(epic_data)
     downloads_images_from_api(image_links, path)
 
