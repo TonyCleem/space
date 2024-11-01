@@ -4,7 +4,7 @@ import argparse
 from dotenv import load_dotenv
 from pathlib import Path
 from filename_parser  import parse_filename_and_extension_from_url
-from downloader import downloads_images_from_api
+from downloader import downloads_images_from_api_data
 
 
 def create_parser():
@@ -39,7 +39,7 @@ if __name__ == '__main__':
     url = 'https://api.nasa.gov/planetary/apod'
     apod_json_data = get_json_data_from_apod_api(url, photo_count, nasa_token)
     image_links = [link['url'] for link in apod_json_data]
-    downloads_images_from_api(image_links, path)
+    downloads_images_from_api_data(image_links, path)
     print(f'Загружено {photo_count} фото')
     
 

@@ -1,7 +1,7 @@
 import requests
 import argparse
-from downloader import download_files_from_data_in_dir
-from fetch_data import get_data_from_link
+from downloader import downloads_images_from_api_data
+from fetch_data import get_json_data_from_api
 
 
 def create_parser():

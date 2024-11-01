@@ -52,7 +52,7 @@ if __name__ == '__main__':
 
     path = Path('./image/')
 
-    parser = createParser()
+    parser = create_parser()
     args = parser.parse_args()
     hours = args.time * 3600
     

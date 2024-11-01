@@ -38,8 +38,8 @@ if __name__ == '__main__':
     chat_id = os.environ['TELEGRAM_CHAT_ID']
     bot = telegram.Bot(token=tg_token)
     updates = bot.get_updates()
-
     path = Path('./image/')
+    parser = create_parser()
     args = parser.parse_args()
     image = args.file
 
