@@ -154,7 +154,7 @@ dmypy.json
 cython_debug/
 
 # Subscipts
-/fetch_data.py
+fetch_data.py
 
 # PyCharm
 #  JetBrains specific template is maintained in a separate JetBrains.gitignore that can
