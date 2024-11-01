@@ -6,7 +6,7 @@ from dotenv import load_dotenv
 from pathlib import Path
 
 
-def createParser ():
+def create_parser():
     parser = argparse.ArgumentParser(
         description="Постит изображение в телеграм канал. При пустом ключе запостит случайное"
         )
@@ -38,9 +38,8 @@ if __name__ == '__main__':
     chat_id = os.environ['TELEGRAM_CHAT_ID']
     bot = telegram.Bot(token=tg_token)
     updates = bot.get_updates()
-    path = Path('./image/')
 
-    parser = createParser()
+    path = Path('./image/')
     args = parser.parse_args()
     image = args.file
 

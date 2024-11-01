@@ -1,18 +1,18 @@
 import datetime
 import argparse
-from fetch_data import get_data_from_link
-from directory_creator import creates_directory_for_image_path
-from downloader import download_files_from_data_in_dir
+from pathlib import Path
+from fetch_data import get_json_data_from_api
+from downloader import downloads_images_from_api
 
 
-def createParser ():
+def create_parser():
     parser = argparse.ArgumentParser(
         description="Скачивает фото Земли по указанной дате. По умолчнию скачает по последней дате."
         )
     parser.add_argument(
             'date',
             nargs='?',
-            default=None,
+            default='',
             help="Дата в формате YYYY-MM-DD"
         )
 
@@ -30,8 +30,8 @@ def generates_url_nasa_epic(date, image_name):
     return generated_url
 
 
-def creates_image_links(data):
-    for date_and_file in data:
+def creates_image_links(epic_data):
+    for date_and_file in epic_data:
         date = date_and_file['date']
         filename = date_and_file['image']
         image_name = f'{filename}.png'
@@ -40,21 +40,20 @@ def creates_image_links(data):
 
 
 if __name__ == '__main__':
-    parser = createParser()
+    parser = create_parser()
     args = parser.parse_args()
     date = args.date
-    path = creates_directory_for_image_path()
-
+    path = Path('./image/')
+    path.mkdir(parents=True, exist_ok=True)
+    
     image_links = []
+    url = f'https://epic.gsfc.nasa.gov/api/natural/date/{date}'
+    epic_data = get_json_data_from_api(url)
+    print(epic_data)
+    creates_image_links(epic_data)
+    downloads_images_from_api(image_links, path)
+
     if not date:
-        url = f'https://epic.gsfc.nasa.gov/api/natural'
-        data = get_data_from_link(url)
-        creates_image_links(data)
-        download_files_from_data_in_dir(image_links, path)
         print('Загружены последние опубликованные фото')
     else:
-        url = f'https://epic.gsfc.nasa.gov/api/natural/date/{date}'
-        data = get_data_from_link(url)
-        creates_image_links(data)
-        download_files_from_data_in_dir(image_links, path)
         print(f'Загружены фото за {date}')

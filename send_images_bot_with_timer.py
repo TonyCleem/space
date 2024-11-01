@@ -7,7 +7,7 @@ from dotenv import load_dotenv
 from pathlib import Path
 
 
-def createParser ():
+def create_parser():
     parser = argparse.ArgumentParser(
         description="Постит фото по указанному времени в часах."
         )
