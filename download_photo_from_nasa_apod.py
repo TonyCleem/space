@@ -3,8 +3,8 @@ import os
 import argparse
 from dotenv import load_dotenv
 from pathlib import Path
-from filename_parser  import parse_filename_and_extension_from_url
-from downloader import downloads_images_from_api_data
+from fetch_and_decode_filename  import fetch_and_decodes_filename_from_link
+from downloader import downloads_images_from_images_links
 
 
 def create_parser():
@@ -19,29 +19,24 @@ def create_parser():
     return parser
 
 
-def get_json_data_from_apod_api(url, count, api_token):
-    payload = {'count': count, 'api_key': api_token}
+def get_images_url_from_api(url, image_count, api_key):
+    payload = {'count': image_count, 'api_key': api_key}
     response = requests.get(url, params=payload)
-    response.raise_for_status
-    apod_json_data = response.json()
-    return apod_json_data
+    response.raise_for_status()
+    images_url = response.json()
+    return images_url
     
 
 if __name__ == '__main__':
     load_dotenv()
-    nasa_token = os.environ['NASA_API_TOKEN']
+    api_key = os.environ['NASA_API_TOKEN']
     parser = create_parser()
     args = parser.parse_args()
-    photo_count = args.count
-
+    image_count = args.count
     path = Path('./image/')
     path.mkdir(parents=True, exist_ok=True)
     url = 'https://api.nasa.gov/planetary/apod'
-    apod_json_data = get_json_data_from_apod_api(url, photo_count, nasa_token)
-    image_links = [link['url'] for link in apod_json_data]
-    downloads_images_from_api_data(image_links, path)
-    print(f'Загружено {photo_count} фото')
-    
-
-
-   
+    images_url = get_images_url_from_api(url, image_count, api_key)
+    images_links = [link['url'] for link in images_url]
+    downloads_images_from_images_links(images_links, path)
+    print(f'Загружено {image_count} фото')

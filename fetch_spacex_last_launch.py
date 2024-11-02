@@ -1,6 +1,7 @@
 import requests
 import argparse
-from downloader import downloads_images_from_api_data
+from pathlib import Path
+from downloader import downloads_images_from_images_links
 from fetch_data import get_json_data_from_api
 
 
@@ -16,12 +17,12 @@ def create_parser():
     return parser
 
 
-def check_photo_from_last_launch(url):
+def get_images_links_from_last_launch(url):
     response = requests.get(url)
     response.raise_for_status
     api_spacex_data = response.json()
-    images = api_spacex_data['links']['flickr']['original']
-    return images
+    images_links_list = api_spacex_data['links']['flickr']['original']
+    return images_links_list
 
 
 if __name__ == '__main__':
@@ -30,12 +31,12 @@ if __name__ == '__main__':
     launch_id = args.id
     url = f'https://api.spacexdata.com/v5/launches/{launch_id}'
 
-    if not check_photo_from_last_launch(url):
+    if not get_images_links_from_last_launch(url):
         print('Фотографий с последнего запуска нет')
     else:
         path = Path('./image/')
         path.mkdir(parents=True, exist_ok=True)
-        api_spacex_data = get_data_from_link(url)
-        links = api_spacex_data['links']['flickr']['original']
-        download_files_from_data_in_dir(links, path)
+        api_spacex_data = get_json_data_from_api(url)
+        images_links = api_spacex_data['links']['flickr']['original']
+        downloads_images_from_images_links(images_links, path)
         print('Загружены все фотографии с указанного ID запуска')
