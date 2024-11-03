@@ -91,7 +91,7 @@ C:\Devman\space>py download_photo_from_nasa_apod.py 3
 C:\Devman\space>
 ```
 
-#### Скрипты для телеграм бота
+### Скрипты для телеграм бота
 В файле `.env` укажите имя телеграм канала для переменной `tg_channel_id`.
 >```
 >NASA_API=<ваш ключ>
