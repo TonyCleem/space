@@ -21,8 +21,8 @@ def get_images_links_from_last_launch(url):
     response = requests.get(url)
     response.raise_for_status
     api_spacex_data = response.json()
-    images_links_list = api_spacex_data['links']['flickr']['original']
-    return images_links_list
+    images_links = api_spacex_data['links']['flickr']['original']
+    return images_links
 
 
 if __name__ == '__main__':
