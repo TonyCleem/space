@@ -2,6 +2,7 @@ import telegram
 import argparse
 import os
 import random
+from directory_image_fetcher import get_images_of_directory
 from dotenv import load_dotenv
 from pathlib import Path
 
@@ -20,14 +21,7 @@ def create_parser():
     return parser
 
 
-def get_images_of_directory(path):
-    directory_structure = os.walk(path)
-    for contents in directory_structure:
-        dirpath, dirnames, images = contents
-        return images
-
-
-def sends_image(chat_id, path, image):
+def sends_image(bot, chat_id, path):
         with open(file_path, 'rb') as document:
             bot.send_document(chat_id, document)
 
@@ -35,7 +29,8 @@ def sends_image(chat_id, path, image):
 if __name__ == '__main__':
     load_dotenv()
     tg_token = os.environ['TELEGRAM_BOT_TOKEN']
-    chat_id = os.environ['TELEGRAM_CHAT_ID']
+    tg_channel_id = os.environ['TELEGRAM_CHANNEL_NAME']
+
     bot = telegram.Bot(token=tg_token)
     updates = bot.get_updates()
     path = Path('./image/')
@@ -48,10 +43,10 @@ if __name__ == '__main__':
         random.shuffle(images)
         image = images[0]
         file_path = path / image
-        sends_image(chat_id, file_path, image)
-        print(f'Изображение {image} отправлено на канал  {chat_id}')
+        sends_image(bot, tg_channel_id, file_path)
+        print(f'Изображение {image} отправлено на канал  {tg_channel_id}')
     else:
         file_path = path / image
-        sends_image(chat_id, file_path, image)
-        print(f'Изображение {image} отправлено на канал  {chat_id}')
+        sends_image(bot, tg_channel_id, file_path)
+        print(f'Изображение {image} отправлено на канал  {tg_channel_id}')
         
