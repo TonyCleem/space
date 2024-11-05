@@ -3,6 +3,7 @@ import argparse
 import os
 import random
 from directory_image_fetcher import get_images_of_directory
+from sends_image import send_image_with_tg_bot
 from dotenv import load_dotenv
 from pathlib import Path
 
@@ -19,12 +20,7 @@ def create_parser():
         )
 
     return parser
-
-
-def sends_image(bot, chat_id, path):
-        with open(file_path, 'rb') as document:
-            bot.send_document(chat_id, document)
-
+    
 
 if __name__ == '__main__':
     load_dotenv()
@@ -43,7 +39,7 @@ if __name__ == '__main__':
         random.shuffle(images)
         image = images[0]
         file_path = path / image
-        sends_image(bot, tg_channel_id, file_path)
+        send_image_with_tg_bot(bot, tg_channel_id, file_path)
         print(f'Изображение {image} отправлено на канал  {tg_channel_id}')
     else:
         file_path = path / image

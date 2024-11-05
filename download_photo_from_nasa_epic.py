@@ -1,8 +1,9 @@
 import datetime
 import argparse
+import requests
 from pathlib import Path
-from fetch_data import get_json_data_from_api
-from downloader import downloads_images_from_images_links
+from downloader import downloads_images_from_image_links
+from fetch_images import get_images_from_api
 
 
 def create_parser():
@@ -19,15 +20,12 @@ def create_parser():
     return parser
 
 
-def create_images_links_from_dates_and_images(epic_data):
-    for date_and_image in epic_data:
-        date = date_and_image['date']
-        image = date_and_image['image']
-        image_name = f'{image}.png'
-        adatetime = datetime.datetime.fromisoformat(date)
-        formatted_date = adatetime.strftime("%Y/%m/%d")
-        formatted_url = f"https://epic.gsfc.nasa.gov/archive/natural/{formatted_date}/png/{image_name}"
-        images_links.append(formatted_url)
+def get_formatted_url(date, image_name):
+    formatted_image_name = f'{image_name}.png'
+    formatted_datetime = datetime.datetime.fromisoformat(date)
+    formatted_date = formatted_datetime.strftime("%Y/%m/%d")
+    formatted_url = f"https://epic.gsfc.nasa.gov/archive/natural/{formatted_date}/png/{formatted_image_name}"
+    return formatted_url
 
 
 if __name__ == '__main__':
@@ -37,11 +35,10 @@ if __name__ == '__main__':
     path = Path('./image/')
     path.mkdir(parents=True, exist_ok=True)
     
-    images_links = []
     url = f'https://epic.gsfc.nasa.gov/api/natural/date/{date}'
-    dates_and_images = get_json_data_from_api(url)
-    create_images_links_from_dates_and_images(dates_and_images)
-    downloads_images_from_images_links(images_links, path)
+    dates_and_image_names = get_images_from_api(url)
+    image_links = [get_formatted_url(date_and_image_name['date'], date_and_image_name['image']) for date_and_image_name in dates_and_image_names]
+    downloads_images_from_image_links(image_links, path)
 
     if not date:
         print('Загружены последние опубликованные фото')

@@ -3,8 +3,7 @@ import os
 import argparse
 from dotenv import load_dotenv
 from pathlib import Path
-from fetch_and_decode_filename  import fetch_and_decodes_filename_from_link
-from downloader import downloads_images_from_images_links
+from downloader import downloads_images_from_image_links
 
 
 def create_parser():
@@ -19,12 +18,12 @@ def create_parser():
     return parser
 
 
-def get_images_url_from_api(url, image_count, api_key):
+def get_image_urls_from_api(url, image_count, api_key):
     payload = {'count': image_count, 'api_key': api_key}
     response = requests.get(url, params=payload)
     response.raise_for_status()
-    images_url = response.json()
-    return images_url
+    image_urls = response.json()
+    return image_urls
     
 
 if __name__ == '__main__':
@@ -36,7 +35,7 @@ if __name__ == '__main__':
     path = Path('./image/')
     path.mkdir(parents=True, exist_ok=True)
     url = 'https://api.nasa.gov/planetary/apod'
-    images_url = get_images_url_from_api(url, image_count, api_key)
-    images_links = [link['url'] for link in images_url]
-    downloads_images_from_images_links(images_links, path)
+    image_urls = get_image_urls_from_api(url, image_count, api_key)
+    image_links = [link['url'] for link in image_urls]
+    downloads_images_from_image_links(image_links, path)
     print(f'Загружено {image_count} фото')
