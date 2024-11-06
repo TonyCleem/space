@@ -100,7 +100,7 @@ C:\Devman\space>
 >```
 
 
-##### `send_images_bot`
+##### `send_images_to_tg_channel`
 Укажите имя изображения из директории как ключ. При пустом значении будет отправлено случайное
 ```cmd
 C:\Devman\space>py send_images_bot.py Image_epic_1b_20241030091805.png
@@ -111,7 +111,7 @@ C:\Users\tonyc\AppData\Roaming\Python\Python312\site-packages\telegram\utils\req
 C:\Devman\space>
 ```
 
-##### `send_images_bot_with_timer`
+##### `send_images_to_tg_channel_with_timer`
 Выгружает из директории все изображения в телеграм канал. Между постами оставляет промежуток времени.
 Укажите время промежутка в качестве ключа, где 1 == 1 час. По умолчанию задано 4 часа между постами.
 ```cmd

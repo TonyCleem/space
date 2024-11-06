@@ -17,30 +17,31 @@ def create_parser():
     return parser
 
 
-def get_image_links_from_last_launch(url):
-    response = requests.get(url)
-    response.raise_for_status
-    launch_details = response.json()
-    image_links = launch_details['links']['flickr']['original']
-    return image_links
-
-
 if __name__ == '__main__':
     parser = create_parser()
     args = parser.parse_args()
     launch_id = args.id
+    path = Path('./image/')
+    path.mkdir(parents=True, exist_ok=True)
     url = f'https://api.spacexdata.com/v5/launches/{launch_id}'
+  
 
-    if get_image_links_from_last_launch(url):
-        path = Path('./image/')
-        path.mkdir(parents=True, exist_ok=True)
-        image_urls_from_launch = get_images_from_api(url)
-        image_links = image_urls_from_launch['links']['flickr']['original']
-        downloads_images_from_image_links(image_links, path)
+    images = get_images_from_api(url)
+    image_links = images['links']['flickr']['original']
+
+    if downloads_images_from_image_links(image_links, path):
         print('Загружены все фотографии с указанного ID запуска')
+    else:    
+        print('Фотографий с последнего запуска нет')
         
-    if not get_image_links_from_last_launch(url):
-        print('Фото с последнего запуска нет')
+
+
+
+
+    
+        
+
+    
 
     
         

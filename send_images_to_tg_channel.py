@@ -3,7 +3,7 @@ import argparse
 import os
 import random
 from directory_image_fetcher import get_images_of_directory
-from sends_image import send_image_with_tg_bot
+from sender_images import send_image_with_tg_bot
 from dotenv import load_dotenv
 from pathlib import Path
 
@@ -30,6 +30,7 @@ if __name__ == '__main__':
     bot = telegram.Bot(token=tg_token)
     updates = bot.get_updates()
     path = Path('./image/')
+
     parser = create_parser()
     args = parser.parse_args()
     image = args.file
@@ -38,11 +39,6 @@ if __name__ == '__main__':
         images = get_images_of_directory(path)
         random.shuffle(images)
         image = images[0]
-        file_path = path / image
-        send_image_with_tg_bot(bot, tg_channel_id, file_path)
-        print(f'Изображение {image} отправлено на канал  {tg_channel_id}')
-    else:
-        file_path = path / image
-        sends_image(bot, tg_channel_id, file_path)
-        print(f'Изображение {image} отправлено на канал  {tg_channel_id}')
-        
+    file_path = path / image 
+    send_image_with_tg_bot(bot, tg_channel_id, file_path)
+    print(f'Изображение {image} отправлено на канал  {tg_channel_id}')

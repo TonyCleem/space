@@ -38,9 +38,9 @@ if __name__ == '__main__':
     url = f'https://epic.gsfc.nasa.gov/api/natural/date/{date}'
     dates_and_image_names = get_images_from_api(url)
     image_links = [get_formatted_url(date_and_image_name['date'], date_and_image_name['image']) for date_and_image_name in dates_and_image_names]
-    downloads_images_from_image_links(image_links, path)
 
-    if not date:
-        print('Загружены последние опубликованные фото')
-    else:
+    if downloads_images_from_image_links(image_links, path) and date:
         print(f'Загружены фото за {date}')
+    else:
+        print('Загружены последние опубликованные фото')
+        

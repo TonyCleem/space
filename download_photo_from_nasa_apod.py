@@ -29,11 +29,14 @@ def get_image_urls_from_api(url, image_count, api_key):
 if __name__ == '__main__':
     load_dotenv()
     api_key = os.environ['NASA_API_TOKEN']
+
     parser = create_parser()
     args = parser.parse_args()
     image_count = args.count
+
     path = Path('./image/')
     path.mkdir(parents=True, exist_ok=True)
+    
     url = 'https://api.nasa.gov/planetary/apod'
     image_urls = get_image_urls_from_api(url, image_count, api_key)
     image_links = [link['url'] for link in image_urls]
